@@ -1,0 +1,568 @@
+<?xml version="1.0"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="racecar_1" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="body_color">
+      <visual>
+      <material>
+          <ambient>1 0 0 1</ambient>
+          <diffuse>1 0 0 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 0</emissive>
+      </material>
+      </visual>
+  </xacro:macro>
+
+    <xacro:macro name="rear_tyre_color">
+      <visual>
+      <material>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 0</emissive>
+      </material>
+      </visual>
+  </xacro:macro>
+
+    <xacro:macro name="l_link_right_color">
+      <visual>
+      <material>
+          <ambient>0.792156862745098 0.819607843137255 0.933333333333333 1</ambient>
+          <diffuse>0.792156862745098 0.819607843137255 0.933333333333333 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 0</emissive>
+      </material>
+      </visual>
+  </xacro:macro>
+
+    <xacro:macro name="l_link_left_color">
+      <visual>
+      <material>
+          <ambient>0.792156862745098 0.819607843137255 0.933333333333333 1</ambient>
+          <diffuse>0.792156862745098 0.819607843137255 0.933333333333333 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 0</emissive>
+      </material>
+      </visual>
+  </xacro:macro>
+
+    <xacro:macro name="tyre_right_f_color">
+      <visual>
+      <material>
+          <ambient>0.792156862745098 0.819607843137255 0.933333333333333 1</ambient>
+          <diffuse>0.792156862745098 0.819607843137255 0.933333333333333 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 0</emissive>
+      </material>
+      </visual>
+  </xacro:macro>
+
+    <xacro:macro name="tyre_left_f_color">
+      <visual>
+      <material>
+          <ambient>0.792156862745098 0.819607843137255 0.933333333333333 1</ambient>
+          <diffuse>0.792156862745098 0.819607843137255 0.933333333333333 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 0</emissive>
+      </material>
+      </visual>
+  </xacro:macro>
+
+    # before base link
+  <link name="dummy_link"></link>
+
+ 
+
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.0109928146425733 -0.0533021658276837 -0.0718641926502767"
+        rpy="0 0 0" />
+      <mass
+        value="20.6916512486912" />
+      <inertia
+        ixx="0.321750706503774"
+        ixy="0.00106012553052971"
+        ixz="0.0300017756684681"
+        iyy="1.2584962847604"
+        iyz="0.00193875141931229"
+        izz="1.42862347215519" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://racecar_1/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://racecar_1/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+   # after base link
+  <joint name="dummy_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <parent link="dummy_link"/>
+      <child link="base_link"/>
+  </joint>
+
+  <link name="laser_frame">
+    <visual>
+      <geometry>
+          <cylinder radius="0.03" length="0.04"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.03" length="0.04"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="laser_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="laser_frame"/>
+        <origin xyz= "-0.018 -0.055 0.095" rpy="0 0 0"/>
+  </joint>
+
+  <gazebo reference="laser_frame">
+  <gravity>true</gravity>
+  <sensor name="imu_sensor" type="imu">
+    <always_on>true</always_on>
+    <update_rate>100</update_rate>
+    <visualize>true</visualize>
+    <topic>__default_topic__</topic>
+    <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+      <topicName>imu</topicName>
+      <bodyName>base_link</bodyName>
+      <updateRateHZ>10.0</updateRateHZ>
+      <gaussianNoise>0.0</gaussianNoise>
+      <xyzOffset>0 0 0</xyzOffset>
+      <rpyOffset>0 0 0</rpyOffset>
+      <frameName>base_link</frameName>
+      <initialOrientationAsReference>false</initialOrientationAsReference>
+    </plugin>
+    <pose>0 0 0 0 0 0</pose>
+  </sensor>
+  </gazebo>
+
+  <gazebo reference="laser_frame">
+  <sensor name="lidar" type="ray">
+    <pose>0.0 0.0 0.0 0 0 0</pose>
+    <always_on>true</always_on>
+    <visualize>true</visualize>
+    <update_rate>5</update_rate>
+    <ray>
+      <scan>
+        <horizontal>
+          <samples>360</samples>
+          <resolution>1.00000</resolution>
+          <min_angle>0.000000</min_angle>
+          <max_angle>6.280000</max_angle>
+        </horizontal>
+      </scan>
+      <range>
+        <min>0.120000</min>
+        <max>4</max>
+        <resolution>0.015000</resolution>
+      </range>
+      <noise>
+        <type>gaussian</type>
+        <mean>0.0</mean>
+        <stddev>0.01</stddev>
+      </noise>
+    </ray>
+    <plugin name="scan" filename="libgazebo_ros_ray_sensor.so">
+      <ros>
+        <remapping>~/out:=scan</remapping>
+      </ros>
+      <output_type>sensor_msgs/LaserScan</output_type>
+      <frame_name>laser_frame</frame_name>
+    </plugin>
+  </sensor>
+  </gazebo>
+
+  <link
+    name="back_wheel_link">
+    <inertial>
+      <origin
+        xyz="0 0 0.2667"
+        rpy="0 0 0" />
+      <mass
+        value="3.96932815202646" />
+      <inertia
+        ixx="0.19975718936313"
+        ixy="4.21553625732351E-22"
+        ixz="3.14070001763781E-18"
+        iyy="0.19975718936313"
+        iyz="-8.27251196498385E-22"
+        izz="0.0132550193787797" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://racecar_1/meshes/back_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://racecar_1/meshes/back_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="back_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="-0.298429345837053 0.210979890534715 -0.115299876982604"
+      rpy="1.5707963267949 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="back_wheel_link" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="right_steering_link">
+    <inertial>
+      <origin
+        xyz="0.000690836569863296 0.0427070668978653 0.0131737283632447"
+        rpy="0 0 0" />
+      <mass
+        value="0.283850895821169" />
+      <inertia
+        ixx="0.000781265856276585"
+        ixy="-1.03877435530983E-05"
+        ixz="-1.52732848818862E-06"
+        iyy="0.000139257541666712"
+        iyz="-9.44190538544127E-05"
+        izz="0.000707853269137981" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://racecar_1/meshes/right_steering_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://racecar_1/meshes/right_steering_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_steering_joint"
+    type="revolute">
+    <origin
+      xyz="0.233219014618529 0.0889076771147307 -0.136262415827957"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="right_steering_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.24"
+      upper="0.24"
+      effort="100"
+      velocity="100" />
+  </joint>
+  <link
+    name="rightfront_wheel_link">
+    <inertial>
+      <origin
+        xyz="-0.000616208304562216 -4.16333634234434E-17 0.0380950165681207"
+        rpy="0 0 0" />
+      <mass
+        value="1.67146542212714" />
+      <inertia
+        ixx="0.00395119315654341"
+        ixy="3.62530640146086E-20"
+        ixz="-4.04455905049505E-05"
+        iyy="0.00395053892638426"
+        iyz="-1.65517409058071E-18"
+        izz="0.00645095222653964" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://racecar_1/meshes/rightfront_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://racecar_1/meshes/rightfront_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rightfront_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="0.00225946585726597 0.139681622359658 0.020962538845353"
+      rpy="1.5707963267949 0 0" />
+    <parent
+      link="right_steering_link" />
+    <child
+      link="rightfront_wheel_link" />
+    <axis
+      xyz="0.0161734463139682 0 -0.99986920126301" />
+    <limit
+      effort="100"
+      velocity="1000" />
+  </joint>
+  <link
+    name="left_steering_link">
+    <inertial>
+      <origin
+        xyz="0.00151984293570018 -0.042685605044254 0.0131737283532376"
+        rpy="0 0 0" />
+      <mass
+        value="0.283850896147853" />
+      <inertia
+        ixx="0.000780620573162083"
+        ixy="2.28422322536719E-05"
+        ixz="-3.36015646299281E-06"
+        iyy="0.000139902826898753"
+        iyz="9.43716052922465E-05"
+        izz="0.000707853271101086" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://racecar_1/meshes/left_steering_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://racecar_1/meshes/left_steering_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_steering_joint"
+    type="revolute">
+    <origin
+      xyz="0.233219090821369 -0.200347894072532 -0.136262415827957"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_steering_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.24"
+      upper="0.24"
+      effort="100"
+      velocity="10" />
+  </joint>
+  <link
+    name="leftfront_wheel_link">
+    <inertial>
+      <origin
+        xyz="-0.0013557333541791 0 -0.0380758714551928"
+        rpy="0 0 0" />
+      <mass
+        value="1.67146542212714" />
+      <inertia
+        ixx="0.00395370575111928"
+        ixy="1.22786246949949E-19"
+        ixz="8.89405067449828E-05"
+        iyy="0.00395053892638426"
+        iyz="-2.07986499324679E-20"
+        izz="0.00644843963196377" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://racecar_1/meshes/leftfront_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://racecar_1/meshes/leftfront_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leftfront_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="0.0049709815030218 -0.139611425585025 0.020962538845353"
+      rpy="1.5707963267949 0 0" />
+    <parent
+      link="left_steering_link" />
+    <child
+      link="leftfront_wheel_link" />
+    <axis
+      xyz="-0.0355835526031261 0 -0.999366704860703" />
+    <limit
+      effort="100"
+      velocity="1000" />
+  </joint>
+
+  <ros2_control name="GazeboSystem" type="system">
+  <hardware>
+      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+  </hardware>
+  # Velocity Controllers
+
+  <joint name="back_wheel_joint">
+      <command_interface name="velocity">
+          <param name="min">-1000.0</param>
+          <param name="max">1000.0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+  </joint>
+
+  <joint name="rightfront_wheel_joint">
+      <command_interface name="velocity">
+          <param name="min">-1000.0</param>
+          <param name="max">1000.0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+  </joint>
+
+  <joint name="leftfront_wheel_joint">
+      <command_interface name="velocity">
+          <param name="min">-1000.0</param>
+          <param name="max">1000.0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+  </joint>
+
+
+  # Position Controller
+  <joint name="right_steering_joint">
+      <command_interface name="position">
+          <param name="min">-0.34</param>
+          <param name="max">0.34</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+  </joint>
+
+  <joint name="left_steering_joint">
+      <command_interface name="position">
+          <param name="min">-0.34</param>
+          <param name="max">0.34</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+  </joint>
+
+  </ros2_control>
+
+  <gazebo>
+      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+          <parameters>$(find racecar_1)/config/control.yaml</parameters>
+      </plugin>
+  </gazebo>
+
+  <gazebo reference="base_link">
+    <xacro:body_color />
+  </gazebo>
+  <gazebo reference="back_wheel_link">
+    <xacro:rear_tyre_color />
+  </gazebo>
+  <gazebo reference="right_steering_link">
+    <xacro:l_link_right_color />
+  </gazebo>
+  <gazebo reference="left_steering_link">
+    <xacro:l_link_left_color />
+  </gazebo>
+  <gazebo reference="rightfront_wheel_link">
+    <xacro:tyre_right_f_color />
+  </gazebo>
+  <gazebo reference="leftfront_wheel_link">
+    <xacro:tyre_left_f_color />
+  </gazebo>
+  
+</robot>
